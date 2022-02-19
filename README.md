@@ -1476,3 +1476,17 @@ class CartItem(models.Model):
         unique_together = [['cart', 'product']] #list of list
 ```
 
+
+
+## 4 
+
+age ye api dashte bashim ke bazi az amaliataro nakhaym (masalan get all ro nakhaym) bayad az customViewSet estefade konim:
+
+```python
+#inja felan faqat create ro dare
+class CartViewSet(CreateModelMixin, GenericViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+```
+
