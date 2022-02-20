@@ -1660,3 +1660,43 @@ django khodesh tamame permissionaro vase api misaze. ama hamashun crudan. hala a
 # ye list az tuple migire ke avali key hast 2vomi description
 ```
 
+
+
+# Securing APIs
+
+
+
+## 3 add authentication endpoints
+
+django ye library dare be esme __Djoser__ ke vase karaye authentication view amade karde.
+
+
+
+## 4 Registering Users
+
+djoser ye seri api dare ke mesle panele admin mishe beshun dastresi dasht. hala age bekhaym model ro vase ye api avaz konim bayad ye seri taqirat bedim. masalan age vase methode create bekhaym modele user ro avaz konim ke fieldaye dg ham dashte bashe aval bayad berim tu documentation djoser tu bakhshe serializer hame serializeriaei ke dare estefade mikone ro neveshte. hala un chizi ke mikhaym taqir bedim ro ba modele khodemun jaygozin mikonim (tu settings):
+
+(ye nokte inke in taqirat ro tu core app anjam midim chon vabaste be projan)
+
+```python
+#ye file jadid be esme serializer.py tu core
+#classe UserCreateSerializer ro az documentation peyda kardim
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
+
+class UserCreateSerializer(BaseUserCreateSerializer):
+    class Meta(BaseUserCreateSerializer.Meta):
+        fields = ['id', 'username', 'password',
+                  'email', 'first_name', 'last_name']
+```
+
+bad in class ro tu setting proje ezafe mikonim:
+
+```python
+#key user_create ro az documentation peyda kardim
+DJOSER = {
+    'SERIALIZERS' : {
+        'user_create': 'core.serializers.UserCreateSerializer'
+    }
+}
+```
+
