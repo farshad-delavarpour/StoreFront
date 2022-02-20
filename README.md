@@ -1635,3 +1635,28 @@ class LikedItem(models.Model):
 
 dar edame ezafe kardan be admin ro mige.
 
+
+
+## 5 User Profiles
+
+model ro dorost mikonim v ye relatione oneToOne midim be user
+
+```python
+user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+```
+
+
+
+## 7 Custom Permissions
+
+django khodesh tamame permissionaro vase api misaze. ama hamashun crudan. hala age bekhaym ye permissione khast khodemun ezafe konim bayad tu modelesh, tu classe meta ye field ezafe konim:
+
+```python
+   class Meta:
+        permissions = [
+            ('cancel_order', 'Can cancel order')
+        ]
+# ye list az tuple migire ke avali key hast 2vomi description
+```
+
