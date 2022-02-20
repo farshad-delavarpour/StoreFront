@@ -1,5 +1,3 @@
-from ast import Return
-from tkinter.messagebox import RETRY
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models.aggregates import Count
@@ -11,7 +9,6 @@ from rest_framework import status
 from store.pagination import DefaultPagination
 from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
 from .models import Cart, CartItem, Collection, OrderItem, Product, Review
-from store import serializers
 
 
 class ProductViewSet(ModelViewSet):
