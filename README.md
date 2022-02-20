@@ -1577,3 +1577,61 @@ class CartItemViewSet(ModelViewSet):
 #bayad lowercase neveshte beshan
 ```
 
+
+
+# Authentication System
+
+## 2
+
+__is_staff__ tu jadvale auth_user mige ke user mitune be panele admin dastresi dashte bashe ya na. 
+
+
+
+## 3 customizing the user model
+
+vase inkar 2 ta rah darim:
+
+__1- Extend User__ - ye classe dg misazim ke az user ersbari kone. injur fieldash mire tu classe user
+
+__2- Create Profile__ - ye model dg misazim ke az dariqe composition ba user ertebat dare. injuri ye table dg misaze ke foreign key dare ba user
+
+hala age  bekhaym be authentication chizi ezafe konim bayad az raveshe aval estefade konim age ke rabti be authentication nadaran bayad az raveshe 2vom estefade konim.
+
+
+
+## 4 Extending the user model
+
+age bekhaym tu fieldaei ke hast taqir bedim bayad ye class dorost konim ke az __AbstractUser__
+
+ersbari kone. 
+
+```python
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+```
+
+bad bayad tu setting begim ke mikhaym az in classe jadid estefade konim.
+
+```python
+AUTH_USER_MODEL = 'core.User' #core esme applicationemune ke user tu classe un tarif shode
+```
+
+az inja be bad vase inke application vabaste be user nabashe nabayad mostaqim be user reference bedim. masalan:
+
+```python
+from django.conf import settings
+
+
+class LikedItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+
+```
+
+
+
+dar edame ezafe kardan be admin ro mige.
+
