@@ -1259,7 +1259,7 @@ class ProductList(ListCreateAPIView):
 
 
 
-nokte: age az in ravesh estefade kardim v tush ye data ro annotate karde bashim tu createsh un field ro mikhad azamun. vase inkar tu serializer jaei ke darim field ro tarif mikonim bayad bezanim ke in field readonlye.
+nokte: age az in ravesh estefade kardim v tush ye data ro annotate karde bashim tu api postesh un field ro mikhad azamun. vase inkar tu serializer jaei ke darim field ro tarif mikonim bayad bezanim ke in field readonlye.
 
 
 
@@ -1488,5 +1488,79 @@ class CartViewSet(CreateModelMixin, GenericViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
+```
+
+
+
+## 8
+
+momkene tu ye viewset bekhaym az 2ta serializere mokhtalef estefade konim. vase inkar bayad methode __get_serializer_class__ ro tu viewset override konim:
+
+```python
+class CartItemViewSet(ModelViewSet):
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return AddCartItemSerializer
+        return CartItemSerializer
+```
+
+
+
+age bekhaym methode save ro override konim bad az inke data validate shode bashe ma be __validated_data__ dastresi darim v mitunim azashun estefade konim:
+
+```python
+def save(self, **kwargs):
+        product_id = self.validated_data['product_id']
+        quantity = self.validated_data['quantity']
+```
+
+
+
+bazi az value haei ke mikhaym momkene tu url bashan. vase estefade tu serializer aval bayad tu viewset az kwargs begirim v tu context pass bedim be serializer bad tu serializer az self.context begirimesh:
+
+```python
+#in view
+def get_serializer_context(self):
+        return {'cart_id': self.kwargs['cart_pk']}
+    
+#in serializer
+def save(self, **kwargs):
+        cart_id = self.context['cart_id']
+
+```
+
+mesale override save:
+
+```python
+def save(self, **kwargs):
+        cart_id = self.context['cart_id']
+        product_id = self.validated_data['product_id']
+        quantity = self.validated_data['quantity']
+
+        try:
+            cart_item = CartItem.objects.get(
+                cart_id=cart_id, product_id=product_id)
+            cart_item.quantity += quantity
+            cart_item.save()
+            self.instance = cart_item
+        except CartItem.DoesNotExist:
+            self.instance = CartItem.objects.create(
+                cart_id=cart_id, **self.validated_data)
+
+        return self.instance
+    
+#tu piade sazie khode save akharesh che update bashe che create result ro tu self.instance mirize.
+```
+
+
+
+age bekhaym ye seri az fieldaye khas ke post mishan ro validate konim:
+
+```python
+#aval tu serializer ye method tarif mikonim:
+def validate_product_id(self, value): #convention roayat she (daqiqan bayad avalesh validate bad esme field bashe badesh khodkar khodesh validation ro vase in field anjam mide)
+    if not Product.objects.filter(pk=value).exists():
+        raise serializers.ValidationError('message')
+    return value
 ```
 
