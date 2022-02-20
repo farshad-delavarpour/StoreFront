@@ -1564,3 +1564,16 @@ def validate_product_id(self, value): #convention roayat she (daqiqan bayad aval
     return value
 ```
 
+
+
+## 9 
+
+tu viewset ye field dare ke mitunim noe request ro moshakhas konim.
+
+```python
+class CartItemViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete']
+#dg put nemitune befreste
+#bayad lowercase neveshte beshan
+```
+
