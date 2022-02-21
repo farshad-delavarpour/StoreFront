@@ -10,7 +10,7 @@ from rest_framework.mixins import RetrieveModelMixin, CreateModelMixin, UpdateMo
 from rest_framework import status
 from store.pagination import DefaultPagination
 from store.permissions import FullDjangoModelPermissions, IsAdminOrReadOnly
-from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
+from .serializers import AddCartItemSerializer, CartItemSerializer, CartSerializer, CollectionSerializer, CreateOrderSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer, UpdateCartItemSerializer
 from .models import Cart, CartItem, Collection, Customer, Order, OrderItem, Product, Review
 from .permissions import ViewCustomerHistoryPermission
 
@@ -108,8 +108,15 @@ class CustomerViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
+
+    def get_serializer_context(self):
+        return {'user_id': self.request.user.id}
 
     def get_queryset(self):
         user = self.request.user
