@@ -1792,3 +1792,32 @@ class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Ge
 #ye nokte inke tu permission_classes ma ye list az class midim ama tu get_permissions bayad listi az object bargardunim pas () mizarim
 ```
 
+
+
+## 12 Add Custom Permissions
+
+tuye app ye file jadid be esme permissions.py dorost mikonim. ye class be esmi ke mikhaym dorost mikonim v az __BasePermission__ ersbari mikonim bad methode __has_permission__ ro override mikonim:
+
+```python
+from rest_framework import permissions
+
+class IsAdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS: ##safe_methods GET, HEAD, OPTIONS hastan
+            return True
+        return bool(request.user and request.user.is_staff)
+```
+
+mitunim be ye class ye authentication bedim ama be methodesh ye authenticatione dg:
+
+```python
+class CustomerViewSet(ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAdminUser]
+
+    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        ...
+```
+
