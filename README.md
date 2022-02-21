@@ -1700,3 +1700,15 @@ DJOSER = {
 }
 ```
 
+
+
+## 8 JWT
+
+jwt ye refresh token dare ye access token ke access lifetimesh kamtare mamulan ke vaqti tamam she refresh ro mifreste v server ye access tokene jadid besh mide.
+
+
+
+## 9 Getting the current user
+
+vase gereftane etelaate user ba token djoser ye api dare /users/me ke token ro migire v etelaate user ro bar migardune.
+
