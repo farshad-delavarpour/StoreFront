@@ -1821,3 +1821,19 @@ class CustomerViewSet(ModelViewSet):
         ...
 ```
 
+
+
+## 13 Model Permissions
+
+age bekhaym be ye group ke tarif kardim dastresi bedim bayad tu permission_classes __DjangoModelPermissions__ ro bezarim. injur user bayad authenticate karde bashe bad be un permissionaei ke tarif kardim dastrei dare.
+
+ye moshkeli ke hast age kasi tu group nabashe mitune get kone. vase dorost kardanesh ye custom permission dorost mikonim:
+
+```python
+#in permissions.py
+class FullDjangoModelPermissions(permissions.DjangoModelPermissions):
+    def __init__(self) -> None: #constractor
+        self.perms_map['GET'] = ['%(app_label)s.view_%(model_name)s'] #formatesh tu classe DjangoModelPermissions bud
+
+```
+
