@@ -1861,3 +1861,26 @@ def history(self, request, pk):
 
 # Designing and Building the Orders Api
 
+## 4 Applying Permissions
+
+age bekhaym itemaei ke male khode user hastan ro begirim:
+
+```python
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_staff: #age admin bud hame ro bargardune
+            return Order.objects.all()
+
+        customer_id = Customer.objects.only('id').get(user_id=user.id)
+        return Order.objects.filter(customer_id=customer_id)
+
+```
+
+
+
