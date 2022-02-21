@@ -520,7 +520,7 @@ with connection.cursor() as cursor:
 
 ## Admin Interface
 
-### 3 registering mdels
+### 3 registering models
 
 tu appe asli ye file admin.py hast ke vase register kardane modelamun unja mirim:
 
