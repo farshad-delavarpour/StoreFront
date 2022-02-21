@@ -1749,3 +1749,46 @@ tu request hamishe user hast. age authorize nashode bashe AnonymousUser mishe da
             return Response(serializer.data)
 ```
 
+
+
+## 11 apply permissions
+
+be surate default hame api hamun AllowAny hastan yani azadan. age in code ro be settings ezafe konim hame niaz be authentication daran:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+        #in default bud 'rest_framework.permissions.AllowAny'
+    ]
+}
+```
+
+age bekhaym vase ye api khas permission bezarim:
+
+```python
+from rest_framework.permissions import IsAuthenticated
+
+class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+
+```
+
+age bekhaym tu api hame betunan get konan ama update ya delete nakonan bayad methode __get_permissions__ ro override konim: 
+
+```python
+class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+
+	def get_permissions(self):
+        if self.request.method == 'Get':
+            return [AllowAny()]
+        return [IsAuthenticated()]
+
+#ye nokte inke tu permission_classes ma ye list az class midim ama tu get_permissions bayad listi az object bargardunim pas () mizarim
+```
+
