@@ -1732,12 +1732,20 @@ class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Ge
         return Response('ok')
 ```
 
-tu request hamishe user hast. age authorize nashode bashe AnonymousUser mishe dar qeyre in surat etelaatesh miad tu hamin object.
+tu request hamishe user hast. age authorize nashode bashe AnonymousUser mishe dar qeyre in surat etelaatesh miad tu hamin object. noe requesti ke be method miad ro ham mishe ba attr methods moshakhas kard. 
 
 ```python
-@action(detail=False)
+@action(detail=False, methods=['GET', 'PUT'])
     def me(self, request):
-        request.
-        return Response('ok')
+        (customer, created) = Customer.objects.get_or_create(
+            user_id=request.user.id)
+        if request.method == 'GET':
+            serializer = CustomerSerializer(customer)
+            return Response(serializer.data)
+        elif request.method == 'PUT':
+            serializer = CustomerSerializer(customer, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
 ```
 
