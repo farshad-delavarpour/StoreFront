@@ -1837,3 +1837,23 @@ class FullDjangoModelPermissions(permissions.DjangoModelPermissions):
 
 ```
 
+
+
+## 14 custom model permission
+
+age ye permission khodemun tarif karde bashim (tu Meta tarif mikardim) hala vase emal kardanesh ye custom permission dorost mikonim:
+
+```python
+#in permission.py
+class ViewCustomerHistoryPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.has_perm('store.view_history') #view_history key ke tu meta tarif kardim vase in permission tu modelesh
+
+    
+ #in view or action
+@action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
+def history(self, request, pk):
+    return Response("ok")
+
+```
+
