@@ -1712,3 +1712,32 @@ jwt ye refresh token dare ye access token ke access lifetimesh kamtare mamulan k
 
 vase gereftane etelaate user ba token djoser ye api dare /users/me ke token ro migire v etelaate user ro bar migardune.
 
+
+
+## 10 Getting the current user profile
+
+mitunim ye method tu class tarif konim v age besh action decorator bedim tu url mitunim besh darkhast bedim:
+
+```python
+from rest_framework.decorators import action
+
+class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+	
+    #detail age false bashe request mishe : .../customer/me
+    #age True bashe mishe .../customer/1/me (yani ye parametri mesle id miad)
+    @action(detail=False)
+    def me(self, request):
+        return Response('ok')
+```
+
+tu request hamishe user hast. age authorize nashode bashe AnonymousUser mishe dar qeyre in surat etelaatesh miad tu hamin object.
+
+```python
+@action(detail=False)
+    def me(self, request):
+        request.
+        return Response('ok')
+```
+
