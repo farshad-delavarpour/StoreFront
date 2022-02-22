@@ -143,7 +143,7 @@ class CreateOrderSerializer(serializers.Serializer):
 
     @transaction.atomic()
     def save(self, **kwargs):
-        (customer, created) = Customer.objects.get_or_create(
+        customer = Customer.objects.get(
             user_id=self.context['user_id'])
         order = Order.objects.create(customer=customer)
 
